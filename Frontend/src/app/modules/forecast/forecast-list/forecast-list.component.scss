@@ -1,0 +1,43 @@
+.card {
+  display: inline-block;
+  border-radius: 6px;
+}
+
+.cardContent {
+  display: flex;
+  justify-content: between !important;
+}
+.switchTemp{
+  align-items: baseline;
+}
+
+.submit {
+  color: white;
+  border: 1px solid rgb(56 189 248);
+  background-color: rgb(56 189 248);
+  padding: 6px 12px;
+  font-size: 19px;
+  border-radius: 5px;
+}
+
+.submit:hover {
+  background-color: rgb(8 47 73);
+  border: 1px solid rgb(8 47 73);
+}
+
+.formBtn {
+  .clear {
+    background-color: white;
+    border: 1px solid rgb(8 47 73);
+    color: rgb(8 47 73);
+    padding: 6px 12px;
+    font-size: 19px;
+    border-radius: 5px;
+  }
+
+  .clear:hover {
+    color: white;
+    border: 1px solid rgb(8 47 73);
+    background-color: rgb(8 47 73);
+  }
+}

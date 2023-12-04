@@ -1,0 +1,131 @@
+<app-loader *ngIf="isLoading"></app-loader>
+<div class="container mx-auto w-10/12">
+
+  <div class="flex justify-between">
+    <div class="w-4/12">
+      <h1 class="text-4xl font-extrabold mt-8">Live Weather</h1>
+
+      <div *ngIf="currentDate" class="CurrentDate my-3 text-2xl">
+        <h2>{{currentDate | date:'fullDate'}}</h2>
+      </div>
+      <div *ngIf="selectedCity" class="CurrentDate mt-3 mb-8 text-2xl">
+        <h2>{{selectedCity}}</h2>
+      </div>
+      <div class="switchTemp flex mt-3 mb-8 text-2xl">
+        <h4>Switch Temperature</h4>
+        <div class="mt-3 mx-4 text-3xl">
+          <button [ngClass]="{'text-sky-400': tempUnit== 'C'}" (click)="toggleTemp('C')">°C</button>
+          <span>|</span>
+          <button [ngClass]="{'text-sky-400': tempUnit== 'F'}" (click)="toggleTemp('F')">°F</button>
+        </div>
+      </div>
+
+    </div>
+    <div class="w-3/12 text-right">
+      <button class='mx-3 mt-10 w-28 submit' *ngIf="!isFilter" (click)='onFilter()'>Filter</button>
+      <div class="filter py-3 px-3 my-4 border-sky-950 rounded-lg border" *ngIf="isFilter">
+        <div class="flex justify-between">
+          <p>Filter By</p>
+          <button class="close-button" (click)="isFilter=false">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <form class="px-5 pt-3" [formGroup]="filterForm" (ngSubmit)="onSubmitForm()">
+          <div class="text-center">
+            <div class="flex">
+              <label for="city" class='mr-1 mt-2'>City</label>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-select formControlName="city" id="city">
+                  <mat-option *ngFor="let city of allCities" [value]="city.id">
+                    {{ city.city }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="flex">
+              <label for="date" class='mr-1 mt-2'>Date</label>
+              <mat-form-field appearance="outline" class="w-100">
+                <input matInput [matDatepicker]="date" formControlName="date" id="date" />
+                <mat-datepicker-toggle matIconSuffix [for]="date"></mat-datepicker-toggle>
+                <mat-datepicker #date></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="formBtn flex">
+            <button type="clear" class="clear text-white" (click)='clearForm()'>Clear</button>
+            <button type="submit" class='mx-3 submit'>Filter</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- <ng-container *ngIf="isError" class='error'>
+    <div class='p-4 border-1 rounded-lg bg-sky-400 text-sky-950 text-center'>
+      <h1 class="text-4xl font-extrabold mt-8">{{isError}}</h1>
+    </div>
+  </ng-container> -->
+  <div *ngIf='isError' class='border-1 rounded-lg bg-sky-400 text-sky-950 text-center'>
+    <h1 class="text-4xl font-extrabold p-4 ">{{isError}}</h1>
+  </div>
+  <ng-container *ngIf="checkResp && !isError">
+    <div class="card-list mx-auto pl-22 mt-4">
+      <mat-card class='card rounded-[6px] w-[24%] color-[rgb(8, 47, 73)] bg-white mx-1 mb-2 p-1'
+        *ngFor="let forecast of ForecastList">
+        <mat-card-header>
+          <mat-card-title class="h1 text-2xl">{{ forecast.city }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="mt-4">
+          <div class="cardContent">
+            <div class="temp w-6/12 ">
+              <p class="h1 font-extrabold text-3xl">{{tempUnit === 'C' ?forecast?.forecast?.temperatureCelsius :
+                forecast?.forecast?.temperatureFahrenheit}} {{tempUnit === 'C' ? '°C' :'°F'}}</p>
+
+            </div>
+            <div class="humidity w-6/12 text-right">
+              <p class="font-bold">Humidity</p>
+              <p>{{ forecast.forecast.humidity }} %</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!checkResp && !isError">
+    <div class="card-list mx-auto pl-32 mt-4">
+      <mat-card class='card rounded-[6px] w-[40%] color-[rgb(8, 47, 73)] bg-white mx-1 mb-2 p-1'
+        *ngFor="let forecast of ForecastByCity.forecast">
+        <mat-card-header>
+          <mat-card-title class="h1 text-2xl">
+            <div>
+              <p>{{ forecast.date |date }}</p>
+            </div>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="mt-4">
+          <div class="cardContent">
+            <div class="temp w-6/12 ">
+              <p class="h1 font-extrabold text-3xl">{{tempUnit === 'C' ?forecast?.temperatureCelsius :
+                forecast?.temperatureFahrenheit}} {{tempUnit === 'C' ? '°C' :'°F'}}</p>
+              <div class="flex mt-3 text-xl">
+                <button [ngClass]="{'text-sky-400': tempUnit== 'C'}" (click)="toggleTemp('C')">°C</button>
+                <span>|</span>
+                <button [ngClass]="{'text-sky-400': tempUnit== 'F'}" (click)="toggleTemp('F')">°F</button>
+              </div>
+            </div>
+            <div class="humidity w-6/12 text-right">
+              <p class="font-bold">Humidity</p>
+              <p>{{ forecast.humidity }} %</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </ng-container>
+
+
+
+</div>
