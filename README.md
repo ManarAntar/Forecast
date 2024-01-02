@@ -12,8 +12,8 @@ Forecast
 
 Backend:
 
-In ./src run: npm ci
-In ./src run: npm start
+ - In ./src run: npm ci
+ - In ./src run: npm start
 
 Frontend :
 
